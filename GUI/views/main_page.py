@@ -15,8 +15,6 @@ def main_page(page: ft.Page, params: Params, basket: Basket):
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-            ),
-            ft.Text("La discothèque apparaîtra ici !"),
-            ft.ElevatedButton("Kécecé", on_click=lambda _: page.go("/page2/")),
+            )
         ]
     )

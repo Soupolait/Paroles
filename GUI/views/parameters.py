@@ -25,7 +25,7 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
         vertical_alignment="center"
     )
 
-    return ft.View(
+    return ft.View( #BOUTONS
         "/parameters/",
         controls=[
             ft.Row(
