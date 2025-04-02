@@ -5,9 +5,15 @@ def main_page(page: ft.Page, params: Params, basket: Basket):
 
     return ft.View(
         '/',
-        controls = [
+        controls = [ #Bouton paramètres
+            ft.Row(
+                controls=[
+                    ft.Container(expand=True),
+                    ft.IconButton(icon=ft.Icons.SETTINGS, icon_size=20, on_click= lambda _: page.go("/parameters/")),
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            ),
             ft.Text("La discothèque apparaîtra ici !"),
-            ft.ElevatedButton("Paramètres", on_click= lambda _: page.go("/parameters/10")),
-            ft.ElevatedButton("Kécecé", on_click= lambda _: page.go("/page2/TEST")),
+            ft.ElevatedButton("Kécecé", on_click= lambda _: page.go("/page2/")),
         ]
     )
