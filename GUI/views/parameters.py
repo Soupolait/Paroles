@@ -1,17 +1,32 @@
 import flet as ft
+import json
+import os
 from flet_route import Params, Basket
 from flet import FilePicker, FilePickerResultEvent
 import subprocess
 
 selected_folder_path = None
+current_dir = os.path.dirname(os.path.abspath(__file__))
+root_dir =  os.path.dirname(current_dir)
+parameters_file = os.path.join(root_dir, 'parameters.json')
 
 def parameters(page: ft.Page, params: Params, basket: Basket):
+    global parameters_file
     global selected_folder_path
+    
+    music_folder = ft.Text()
 
-    folder_text = ft.Text(value="Aucun dossier sélectionné.")
+    if os.path.isfile(parameters_file) and os.access(parameters_file, os.R_OK):
+        with open(parameters_file) as f:
+            data = json.load(f)
+            selected_folder_path = data.get('selected_folder', None)
+            if selected_folder_path:
+                music_folder.value = f"Dossier sélectionné : {selected_folder_path}"
+            else:
+                music_folder.value = "Aucun dossier sélectionné..."
 
     file_picker = FilePicker(
-        on_result=lambda e: handle_folder_selected(e, folder_text)
+        on_result=lambda e: handle_folder_selected(e, music_folder)
     )
     page.overlay.append(file_picker)
 
@@ -20,6 +35,8 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
         if e.path:
             selected_folder_path = e.path
             text_element.value = f"Dossier sélectionné : {selected_folder_path}"
+            with open(parameters_file, 'w') as f:
+                json.dump({'selected_folder': selected_folder_path}, f)
             page.update()
 
 
@@ -45,7 +62,7 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
                             "Sélectionner un répertoire",
                             on_click=lambda _: file_picker.get_directory_path()
                         ),
-                        folder_text
+                        music_folder
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER
