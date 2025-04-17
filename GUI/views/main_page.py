@@ -4,6 +4,7 @@ from flet_route import Params, Basket
 def main_page(page: ft.Page, params: Params, basket: Basket):
     return ft.View(
         "/",
+        bgcolor='#FFFFFF',
         controls=[
             ft.Row(
                 controls=[ #Bouton paramètres

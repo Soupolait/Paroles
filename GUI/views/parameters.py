@@ -1,19 +1,14 @@
 import flet as ft
 from flet_route import Params, Basket
+from flet import (Page, FilePicker, Text,
+                  ElevatedButton, Row, Column, FilePickerResultEvent)
 import subprocess
 
-
 def parameters(page: ft.Page, params: Params, basket: Basket):
-    selected_folder_text = ft.Text("")
-
-    def select_folder(e):
-        folder = subprocess.run(['zenity', '--file-selection', '--directory'], capture_output=True, text=True).stdout.strip()
-        if folder:
-            selected_folder_text.value = f"Répertoire sélectionné : {folder}"
-            page.update()
 
     return ft.View(
         "/parameters/",
+        bgcolor='#FFFFFF',
         controls=[
             ft.Row(
                 controls=[
@@ -26,13 +21,13 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
                 alignment=ft.MainAxisAlignment.START
             ),
             ft.Container(  # Conteneur qui centre la colonne
+                #bgcolor=ft.Colors.YELLOW, UTILE POUR VOIR LA ZONE DU CONTENEUR
                 content=ft.Column(
                     controls=[
                         ft.ElevatedButton(
                             "Sélectionner un répertoire",
-                            on_click=select_folder
+                            on_click=lambda _: select_folder
                         ),
-                        selected_folder_text
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER

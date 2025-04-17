@@ -10,7 +10,7 @@ def main(page: ft.Page):
         path(url='/', view=main_page, clear=True),
         path(url='/parameters/', view=parameters, clear=True)
     ]
-
+    
     Routing(page=page, 
             app_routes=app_routes)
 
