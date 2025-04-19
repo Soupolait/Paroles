@@ -1,82 +1,47 @@
-import gi
-
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
-
-class Directory_Holder:
-    def __init__(self):
-        dialog = Gtk.FileChooserDialog(
-        title="Select folder", parent=None, action=Gtk.FileChooserAction.SELECT_FOLDER
-    )
-        dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
-        dialog.add_button("Select", Gtk.ResponseType.OK)
-
-        response = dialog.run()
-        if response == Gtk.ResponseType.OK:
-            self.directory = dialog.get_filename()
-
-        dialog.destroy()
-            
-get_directory = Directory_Holder()
-print(get_directory.directory)
-
-
-#CODE AVEC CLASS
+import os
+import json
 import flet as ft
-from flet_route import Params, Basket
-import subprocess
-import gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
-
-def parameters(page: ft.Page, params: Params, basket: Basket):
-
-    class Directory_Holder:
-        def __init__(self):
-            dialog = Gtk.FileChooserDialog(
-            title="Select folder", parent=None, action=Gtk.FileChooserAction.SELECT_FOLDER
+class MusicListView(ft.ListView):
+    def __init__(self, music_files: list[str]):
+        super().__init__(
+            expand=True,
+            spacing=10,
+            padding=20,
+            build_controls_on_demand=True
         )
-            dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
-            dialog.add_button("Select", Gtk.ResponseType.OK)
+        for name in music_files:
+            self.controls.append(ft.Text(name))
 
-            response = dialog.run()
-            if response == Gtk.ResponseType.OK:
-                self.directory = dialog.get_filename()
+def which_music(music_folder):
+    music_files = []
+    if os.path.isdir(music_folder) and os.access(music_folder, os.R_OK):
+        for root, dirs, files in os.walk(music_folder):
+            for file in files:
+                if file.endswith(('.mp3', '.flac', '.wav', '.ogg')):
+                    music_files.append(file)
+    return music_files
 
-            dialog.destroy()
-            
-    get_directory = Directory_Holder()
+def main(page: ft.Page):
+    page.title = "Music File List"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    return ft.View(
-        "/parameters/",
-        bgcolor='#FFFFFF',
-        controls=[
-            ft.Row(
-                controls=[
-                    ft.IconButton(
-                        icon=ft.icons.ARROW_BACK,
-                        icon_size=20,
-                        on_click=lambda _: page.go("/")
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.START
-            ),
-            ft.Container(  # Conteneur qui centre la colonne
-                #bgcolor=ft.Colors.YELLOW, UTILE POUR VOIR LA ZONE DU CONTENEUR
-                content=ft.Column(
-                    controls=[
-                        ft.ElevatedButton(
-                            "Sélectionner un répertoire",
-                            on_click=get_directory
-                        ),
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER
-                ),
-                alignment=ft.alignment.center,  # Centre tout le contenu
-                expand=True  # Fait en sorte que le container prenne tout l'espace
-            )
-        ],
-        vertical_alignment=ft.MainAxisAlignment.CENTER  # Centre tout le contenu verticalement
+    music_folder = "/home/loic/Musiques"
+    music_files = which_music(music_folder)
+    music_list_view = MusicListView(music_files=music_files)
+
+    def show_music_list(e):
+        page.controls.clear()
+        page.controls.append(music_list_view)
+        page.update()
+
+    page.add(
+        ft.ElevatedButton(
+            text="Show Music Files",
+            on_click=lambda _: music_list_view
+        )
     )
+
+# Lancer l'application
+ft.app(target=main)

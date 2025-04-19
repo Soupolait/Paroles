@@ -39,6 +39,7 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
                 json.dump({'selected_folder': selected_folder_path}, f)
             page.update()
 
+    #basket['music_folder'] = music_folder
 
     return ft.View(
         "/parameters/",
