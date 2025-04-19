@@ -20,26 +20,25 @@ class MusicListView(ft.ListView):
         for name in music_files: 
             self.controls.append(ft.Text(name))
 
-def which_music(): # finding music files, adding them to the list
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.dirname(current_dir)
-    parameters_file = os.path.join(root_dir, 'parameters.json')
-    music_folder = None
-    music_files = []
+    def which_music(): # finding music files, adding them to the list
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        root_dir = os.path.dirname(current_dir)
+        parameters_file = os.path.join(root_dir, 'parameters.json')
+        music_folder = None
+        music_files = []
 
-    if os.path.isfile(parameters_file) and os.access(parameters_file, os.R_OK):
-        with open(parameters_file) as f:
-            data = json.load(f)
-            music_folder = data.get('selected_folder', None)
-            if music_folder:
-                for root, dirs, files in os.walk(music_folder):
-                    for file in files:
-                        if file.endswith(('.mp3', '.flac', '.wav', '.ogg')):
-                            music_files.append(file)
-    return music_files
+        if os.path.isfile(parameters_file) and os.access(parameters_file, os.R_OK):
+            with open(parameters_file) as f:
+                data = json.load(f)
+                music_folder = data.get('selected_folder', None)
+                if music_folder:
+                    for root, dirs, files in os.walk(music_folder):
+                        for file in files:
+                            if file.endswith(('.mp3', '.flac', '.wav', '.ogg')):
+                                music_files.append(file)
+        return music_files
 
-music_files = which_music()
-music_list_view = MusicListView(music_files=music_files)
+    music_files = which_music()
 
 def main_page(page: ft.Page, params: Params, basket: Basket):
 
