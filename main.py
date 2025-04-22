@@ -4,7 +4,6 @@ import os
 from flet_route import Routing, path
 from GUI.main_page import main_page
 from GUI.parameters import parameters
-from API.API import API
 
 def main(page: ft.Page):
 

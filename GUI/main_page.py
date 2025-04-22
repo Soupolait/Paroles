@@ -2,6 +2,7 @@ import flet as ft
 import os
 import json
 from flet_route import Params, Basket
+from API.API import API
 
 class MusicListView(ft.ListView):
     def __init__(self, music_files: list[str]):
@@ -17,8 +18,7 @@ class MusicListView(ft.ListView):
 
 def which_music():
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        root_dir = os.path.dirname(current_dir)
-        parameters_file = os.path.join(root_dir, 'parameters.json')
+        parameters_file = os.path.join(current_dir, 'parameters.json')
         music_folder = None
         music_files = []
 
@@ -56,6 +56,10 @@ def main_page(page: ft.Page, params: Params, basket: Basket):
                 expand=True,
                 alignment=ft.MainAxisAlignment.CENTER,
                 controls=[
+                    ft.ElevatedButton(
+                        "Rechercher des paroles",
+                        on_click = print("ok")
+                    ),
                     ft.Container(
                         margin=10,
                         padding=10,

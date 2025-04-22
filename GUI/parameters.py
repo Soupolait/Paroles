@@ -7,8 +7,7 @@ import subprocess
 
 selected_folder_path = None
 current_dir = os.path.dirname(os.path.abspath(__file__))
-root_dir =  os.path.dirname(current_dir)
-parameters_file = os.path.join(root_dir, 'parameters.json')
+parameters_file = os.path.join(current_dir, 'parameters.json')
 
 def parameters(page: ft.Page, params: Params, basket: Basket):
     global parameters_file
