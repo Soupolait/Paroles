@@ -2,65 +2,52 @@ import requests
 import os
 from tinytag import TinyTag
 
-# Fichiers audio
-dossier = input("Quel répertoire fouiller ? ")
+class API:
+    def __init__(self, file, directory):
+        try:
+            # Vérifier si un fichier .lrc existe déjà
+            lrc_file = os.path.join(directory, f"{os.path.splitext(os.path.basename(file))[0]}.lrc")
+            if os.path.exists(lrc_file):
+                return
 
-def fichiers_audio():
-    for root, dirs, files in os.walk(dossier):
-        for file in files:
-            if file.endswith(('.mp3', '.flac', '.wav', '.ogg')):
-                treat_file(os.path.join(root, file), root)
+            # Obtenir les métadonnées du fichier musical
+            tag = TinyTag.get(file)
+            title = tag.title
+            artist = tag.artist
+            album = tag.album
+            duration = tag.duration
 
-# API
-def paroles(title, artist, album, duration):
-    url = "https://lrclib.net/api/search"
-    params = {
-        'track_name': title,
-        'artist_name': artist,
-        'album_name': album,
-        'duration': duration
-    }
-    r = requests.get(url, params=params)
+            # Obtenir les paroles
+            lyrics = API(title, artist, album, duration)
 
-    if r.status_code == 200:
-        data = r.json()
+            # Enregistrer les paroles dans le fichier LRC
+            with open(lrc_file, 'w') as lrc_file:
+                lrc_file.write(lyrics)
 
-        # Parcourir les résultats pour trouver les paroles
-        for item in data:
-            if "syncedLyrics" in item and item["syncedLyrics"]:
-                return item["syncedLyrics"]
-            elif "plainLyrics" in item and item["plainLyrics"]:
-                return item["plainLyrics"]
-        return "Aucunes paroles trouvées"
-    else:
-        return f"Erreur: {r.status_code}"
+            print(f"Paroles enregistrées dans {lrc_file}")
+        except Exception as e:
+            print(f"Erreur lors du traitement du fichier {fichier}: {e}")
 
-# Fichier LRC
-def treat_file(file, directory):
-    try:
-        # Vérifier si un fichier .lrc existe déjà
-        lrc_filename = os.path.join(directory, f"{os.path.splitext(os.path.basename(file))[0]}.lrc")
-        if os.path.exists(lrc_filename):
-            print(f"Fichier LRC existant trouvé pour {file}. Passage au fichier suivant.")
-            return
+        def API(title, artist, album, duration):
+            url = "https://lrclib.net/api/search"
+            params = {
+                'track_name': title,
+                'artist_name': artist,
+                'album_name': album,
+                'duration': duration
+            }
+            r = requests.get(url, params=params)
 
-        # Obtenir les métadonnées du fichier musical
-        tag = TinyTag.get(file)
-        track = tag.title
-        artist = tag.artist
-        album = tag.album
-        duration = tag.duration
+            if r.status_code == 200:
+                data = r.json()
 
-        # Obtenir les paroles
-        lyrics = paroles(track, artist, album, duration)
+                # Parcourir les résultats pour trouver les paroles
+                for item in data:
+                    if "syncedLyrics" in item and item["syncedLyrics"]:
+                        return item["syncedLyrics"]
+                    elif "plainLyrics" in item and item["plainLyrics"]:
+                        return item["plainLyrics"]
+                return "Aucunes paroles trouvées"
+            else:
+                return r.status_code
 
-        # Enregistrer les paroles dans le fichier LRC
-        with open(lrc_filename, 'w') as lrc_file:
-            lrc_file.write(lyrics)
-
-        print(f"Paroles enregistrées dans {lrc_filename}")
-    except Exception as e:
-        print(f"Erreur lors du traitement du fichier {fichier}: {e}")
-
-# Appel de la fonction principale
-fichiers_audio()
