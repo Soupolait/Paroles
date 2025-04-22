@@ -33,9 +33,17 @@ def which_music():
                             music_files.append(file)
         return music_files
 
+music_folder = "/home/loic/Documents/Paroles/TEST"
 music_files = which_music()
 music_list = MusicListView(music_files)
-  
+# get_LRC = API(music_files, music_folder)
+
+def get_LRC(e):
+    global music_files, music_folder
+    for fichier in music_files:
+        print(fichier)
+        API(fichier, music_folder)
+
 def main_page(page: ft.Page, params: Params, basket: Basket):
   
     return ft.View(
@@ -58,7 +66,7 @@ def main_page(page: ft.Page, params: Params, basket: Basket):
                 controls=[
                     ft.ElevatedButton(
                         "Rechercher des paroles",
-                        on_click = print("ok")
+                        on_click = lambda _: get_LRC
                     ),
                     ft.Container(
                         margin=10,

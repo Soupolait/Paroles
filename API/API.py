@@ -26,7 +26,7 @@ class API:
 
             print(f"Paroles enregistrées dans {lrc_file}")
         except Exception as e:
-            print(f"Erreur lors du traitement du fichier {fichier}: {e}")
+            print(f"Erreur lors du traitement du fichier {file}: {e}")
 
         def API(title, artist, album, duration):
             url = "https://lrclib.net/api/search"
