@@ -6,8 +6,7 @@ from flet import FilePicker, FilePickerResultEvent
 import subprocess
 
 selected_folder_path = None
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parameters_file = os.path.join(current_dir, 'parameters.json')
+parameters_file = os.path.join(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(__file__)))), 'parameters.json')
 
 def parameters(page: ft.Page, params: Params, basket: Basket):
     global parameters_file
@@ -38,8 +37,6 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
                 json.dump({'selected_folder': selected_folder_path}, f)
             page.update()
 
-    #basket['music_folder'] = music_folder
-
     return ft.View(
         "/parameters/",
         bgcolor='#FFFFFF',
@@ -55,7 +52,7 @@ def parameters(page: ft.Page, params: Params, basket: Basket):
                 alignment=ft.MainAxisAlignment.START
             ),
             ft.Container(  # Conteneur qui centre la colonne
-                #bgcolor=ft.Colors.YELLOW, UTILE POUR VOIR LA ZONE DU CONTENEUR
+                #bgcolor=ft.Colors.YELLOW,
                 content=ft.Column(
                     controls=[
                         ft.ElevatedButton(
