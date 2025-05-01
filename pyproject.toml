@@ -1,0 +1,20 @@
+[project]
+name = "paroles"
+version = "0.0.1"
+description = "Une application pour télécharger les paroles de vos chansons"
+authors = [{name = "Ton Nom", email = "ton@email.com"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "flet",
+    "flet_route",
+    "requests",
+    "tinytag"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["API", "GUI"]

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: paroles
+Version: 0.0.1
+Summary: Une application pour télécharger les paroles de vos chansons
+Author-email: Ton Nom <ton@email.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: flet
+Requires-Dist: flet_route
+Requires-Dist: requests
+Requires-Dist: tinytag

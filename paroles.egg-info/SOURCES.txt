@@ -1,0 +1,11 @@
+pyproject.toml
+API/API.py
+API/__init__.py
+GUI/__init__.py
+GUI/main_page.py
+GUI/parameters.py
+paroles.egg-info/PKG-INFO
+paroles.egg-info/SOURCES.txt
+paroles.egg-info/dependency_links.txt
+paroles.egg-info/requires.txt
+paroles.egg-info/top_level.txt
