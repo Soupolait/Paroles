@@ -42,7 +42,8 @@ def get_LRC(e):
     global music_files, music_folder
     for fichier in music_files:
         print(fichier)
-        API(fichier, music_folder)
+        full_path = os.path.join(music_folder, fichier)
+        API(full_path)
 
 def main_page(page: ft.Page, params: Params, basket: Basket):
   
@@ -66,7 +67,7 @@ def main_page(page: ft.Page, params: Params, basket: Basket):
                 controls=[
                     ft.ElevatedButton(
                         "Rechercher des paroles",
-                        on_click = lambda _: get_LRC
+                        on_click = get_LRC
                     ),
                     ft.Container(
                         margin=10,

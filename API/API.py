@@ -3,9 +3,10 @@ import os
 from tinytag import TinyTag
 
 class API:
-    def __init__(self, file, directory):
+    def __init__(self, file):
         try:
             # Vérifier si un fichier .lrc existe déjà
+            directory = os.path.dirname(file)
             lrc_file = os.path.join(directory, f"{os.path.splitext(os.path.basename(file))[0]}.lrc")
             if os.path.exists(lrc_file):
                 return
